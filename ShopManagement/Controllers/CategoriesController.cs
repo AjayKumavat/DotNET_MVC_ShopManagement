@@ -90,6 +90,24 @@ namespace ShopManagement.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(category).State = EntityState.Modified;
+                if(category.IsActive == false)
+                {
+                    var products = new List<Product>();
+                    products = await db.Products.Where(p => p.CategoryId == category.Id).ToListAsync();
+                    foreach(var p in products)
+                    {
+                        p.IsActive = false;
+                    }
+                }
+                else
+                {
+                    var products = new List<Product>();
+                    products = await db.Products.Where(p => p.CategoryId == category.Id).ToListAsync();
+                    foreach (var p in products)
+                    {
+                        p.IsActive = true;
+                    }
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
