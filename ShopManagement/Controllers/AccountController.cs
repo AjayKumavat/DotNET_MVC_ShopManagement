@@ -52,6 +52,12 @@ namespace ShopManagement.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Register(User userModel)
         {
