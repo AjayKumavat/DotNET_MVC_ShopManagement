@@ -8,9 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ShopManagement.Models;
+using ShopManagement.Infrastructure;
 
 namespace ShopManagement.Controllers
 {
+    [CustomAuthenticationFilter]
     public class ProductsController : Controller
     {
         private ShopDbContext db = new ShopDbContext();
@@ -37,6 +39,7 @@ namespace ShopManagement.Controllers
             return View(product);
         }
 
+        [CustomAuthorizationFilter("Admin")]
         // GET: Products/Create
         public ActionResult Create()
         {
@@ -49,6 +52,7 @@ namespace ShopManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorizationFilter("Admin")]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,CategoryId,IsActive")] Product product)
         {
             if (ModelState.IsValid)
@@ -63,6 +67,7 @@ namespace ShopManagement.Controllers
         }
 
         // GET: Products/Edit/5
+        [CustomAuthorizationFilter("Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,6 +88,7 @@ namespace ShopManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorizationFilter("Admin")]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,CategoryId,IsActive")] Product product)
         {
             if (ModelState.IsValid)
@@ -96,6 +102,7 @@ namespace ShopManagement.Controllers
         }
 
         // GET: Products/Delete/5
+        [CustomAuthorizationFilter("Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -113,6 +120,7 @@ namespace ShopManagement.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorizationFilter("Admin")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Product product = await db.Products.FindAsync(id);
