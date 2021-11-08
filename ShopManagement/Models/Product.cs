@@ -13,7 +13,9 @@ namespace ShopManagement.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
-
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public bool IsActive { get; set; }
     }
 }
