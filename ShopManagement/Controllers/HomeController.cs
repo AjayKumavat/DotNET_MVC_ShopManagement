@@ -26,5 +26,11 @@ namespace ShopManagement.Controllers
 
             return View();
         }
+
+        public ActionResult Unauthorized()
+        {
+            ViewBag.Message = "Unauthorized page!";
+            return View();
+        }
     }
 }

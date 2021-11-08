@@ -131,6 +131,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CustomAuthenticationFilter.cs" />
+    <Compile Include="Infrastructure\CustomAuthorizationFilter.cs" />
     <Compile Include="Migrations\202111020952234_Initial.cs" />
     <Compile Include="Migrations\202111020952234_Initial.designer.cs">
       <DependentUpon>202111020952234_Initial.cs</DependentUpon>
@@ -182,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
