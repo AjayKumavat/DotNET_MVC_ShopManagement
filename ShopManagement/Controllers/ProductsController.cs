@@ -18,8 +18,15 @@ namespace ShopManagement.Controllers
         private ShopDbContext db = new ShopDbContext();
 
         // GET: Products
+        [CustomAuthorizationFilter("Admin", "Normal")]
         public async Task<ActionResult> Index()
         {
+            var userName = Convert.ToString(HttpContext.Session["UserName"]);
+            var IsAdmin = (from u in db.Users join r in db.Roles on u.RoleId equals r.Id where u.UserName == userName select r.Name).FirstOrDefault();
+            if(IsAdmin == "Admin")
+            {
+                ViewBag.Show = true;
+            }
             var products = db.Products.Include(p => p.Category);
             return View(await products.ToListAsync());
         }
@@ -53,10 +60,16 @@ namespace ShopManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorizationFilter("Admin")]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,CategoryId,IsActive")] Product product)
+        public async Task<ActionResult> Create(/*[Bind(Include = "Id,Name,CategoryId,IsActive")]*/ Product product)
         {
             if (ModelState.IsValid)
             {
+                var addProduct = new Product();
+                addProduct.Name = product.Name;
+                addProduct.CategoryId = product.CategoryId;
+                addProduct.CreatedDate = DateTime.Now;
+                addProduct.ModifiedDate = DateTime.Now;
+                addProduct.IsActive = product.IsActive;
                 db.Products.Add(product);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
